@@ -11,7 +11,7 @@ import Firebase
 @main
 struct scheduleApp: App {
     
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+//    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     // Intailzing Firebase...
     init(){

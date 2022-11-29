@@ -12,7 +12,7 @@ import FirebaseFirestoreSwift
 
 struct PermissionView: View {
     @State var viewModel = ScheduleViewModel()
-    @State var sentUserData: [UserSample] = []
+    @State var sentUserData: [PermissionBool] = []
 //    @State var sentUserDatas: [UserData] = []
     @State var isShowingDialog: Bool = false
     @State var userID: String?
@@ -25,34 +25,35 @@ struct PermissionView: View {
             Color.green.opacity(0.1)
             ScrollView(.vertical) {
                     ForEach(sentUserData) { user in
-                        VStack {
-                            Button {
-                                isShowingDialog = true
-                                userID = user.id
-                                name = user.name
-                            } label: {
-                                Text("\(user.id ?? "nill")")
-    //                                .foregroundColor(.black)
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            .confirmationDialog("許可しますか？", isPresented: $isShowingDialog) {
+                        if user.isCheck{
+                            VStack {
                                 Button {
-                                    sendGroupSelf(id: userID ?? "err", name: name ?? "err")
-                                    sendGroupAnother(id: Auth.auth().currentUser?.uid ?? "err", name: name ?? "err")
+                                    isShowingDialog = true
+                                    userID = user.id
                                 } label: {
-                                    Text("許可する")
+                                    Text("\(user.id)")
+                                    //                                .foregroundColor(.black)
                                 }
-                                Button("削除する", role: .destructive) {
-
+                                .buttonStyle(PlainButtonStyle())
+                                .confirmationDialog("許可しますか？", isPresented: $isShowingDialog) {
+                                    Button {
+                                        sendGroupSelf(id: userID ?? "err", isCheck: false)
+//                                        sendGroupAnother(id: Auth.auth().currentUser?.uid ?? "err", name: name ?? "err")
+                                    } label: {
+                                        Text("許可する")
+                                    }
+                                    Button("削除する", role: .destructive) {
+                                        
+                                    }
+                                    Button("キャンセルする", role: .cancel) {
+                                        
+                                    }
                                 }
-                                Button("キャンセルする", role: .cancel) {
-
-                                }
+                                //                        Text(user.id ?? "nill")
+                                //                        Text(user.mail ?? "nill")
                             }
-    //                        Text(user.id ?? "nill")
-    //                        Text(user.mail ?? "nill")
+                            .padding()
                         }
-                        .padding()
                     }
                 }
     //            .toolbar {
@@ -68,41 +69,40 @@ struct PermissionView: View {
     //            }
                 .onAppear{
                     Task {
-                        sentUserData = await sentUserData()
+                        await sentUserData()
                     }
                 }
             .navigationTitle("フレンド依頼一覧")
         }
 //        }
     }
-    func sentUserData() async -> [UserSample] {
+    func sentUserData() async {
         do {
-            let db = Firestore.firestore().collection("users").document(Auth.auth().currentUser?.uid ?? "err").collection("permission")
-            let iron = try await db.getDocuments()
-            self.sentUserData = iron.documents.compactMap({ item in
-                return try? item.data(as: UserSample.self)
+            let db = Firestore.firestore().collection("users").document(Auth.auth().currentUser?.uid ?? "err").collection("group")
+            let sentUserData = try await db.getDocuments()
+            self.sentUserData = sentUserData.documents.compactMap({ item in
+                return try? item.data(as: PermissionBool.self)
             })
         } catch {
             print(error.localizedDescription)
         }
-        return sentUserData
     }
-    func sendGroupSelf(id: String, name: String) {
+    func sendGroupSelf(id: String, isCheck: Bool) {
         do {
-            let data = UserSample(id: id, name: name)
+            let data = ReleaseBool(id: id, isCheck: isCheck)
             try Firestore.firestore().collection("users").document(Auth.auth().currentUser?.uid ?? "err").collection("group").document(userID ?? "err").setData(from: data)
         } catch {
             print(error)
         }
     }
-    func sendGroupAnother(id: String, name: String) {
-        do {
-            let data = UserSample(id: id, name: name)
-            try Firestore.firestore().collection("users").document(userID ?? "err").collection("group").document(Auth.auth().currentUser?.uid ?? "err").setData(from: data)
-        } catch {
-            print(error)
-        }
-    }
+//    func sendGroupAnother(id: String, name: String) {
+//        do {
+//            let data = UserSample(id: id, name: name)
+//            try Firestore.firestore().collection("users").document(userID ?? "err").collection("group").document(Auth.auth().currentUser?.uid ?? "err").setData(from: data)
+//        } catch {
+//            print(error)
+//        }
+//    }
 }
 
 

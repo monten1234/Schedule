@@ -12,45 +12,45 @@ struct Home: View {
     @State var currentDate: Date = Date()
     
     var body: some View {
-        
-        ScrollView(.vertical, showsIndicators: false) {
-            
-            VStack(spacing: 20){
+        NavigationView{
+            ScrollView(.vertical, showsIndicators: false) {
                 
-                // Custom Date Picker....
-                CustomDatePicker(currentDate: $currentDate)
-            }
-            .padding(.vertical)
-        }
-        // Safe Area View...
-        .safeAreaInset(edge: .bottom) {
-            
-            HStack{
-                
-                Button {
+                VStack(spacing: 20){
                     
-                } label: {
-                    Text("Add Task")
-                        .fontWeight(.bold)
-                        .padding(.vertical)
-                        .frame(maxWidth: .infinity)
-                        .background(Color("Orange"),in: Capsule())
+                    // Custom Date Picker....
+                    CustomDatePicker(currentDate: $currentDate)
                 }
-
-                Button {
-                    
-                } label: {
-                    Text("Add Remainder")
-                        .fontWeight(.bold)
-                        .padding(.vertical)
-                        .frame(maxWidth: .infinity)
-                        .background(Color("Purple"),in: Capsule())
-                }
+                .padding(.vertical)
             }
-            .padding(.horizontal)
-            .padding(.top,10)
-            .foregroundColor(.white)
-            .background(.ultraThinMaterial)
+            // Safe Area View...
+//            .safeAreaInset(edge: .bottom) {
+//
+//                HStack{
+//
+//                    Button {
+//
+//                    } label: {
+//                        Text("Add Task")
+//                            .fontWeight(.bold)
+//                            .padding(.vertical)
+//                            .frame(maxWidth: .infinity)
+//                            .background(Color("Orange"),in: Capsule())
+//                    }
+//
+//                    Button {
+//
+//                    } label: {
+//                        Text("Add Remainder")
+//                            .fontWeight(.bold)
+//                            .padding(.vertical)
+//                            .frame(maxWidth: .infinity)
+//                            .background(Color("Purple"),in: Capsule())
+//                    }
+//                }
+//                .padding(.horizontal)
+//                .padding(.top,10)
+//                .foregroundColor(.white)
+//                .background(.ultraThinMaterial)
         }
     }
 }

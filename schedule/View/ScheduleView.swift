@@ -17,7 +17,6 @@ struct ScheduleView: View {
     @State var Scheduleid: String?
     
     
-    
     var body: some View {
         NavigationView {
             ZStack {
@@ -80,6 +79,19 @@ struct ScheduleView: View {
                         $0.date.compare($1.date) == .orderedAscending
                     })
                 }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink (destination: SettingView()) {
+                        Image(systemName: ("gearshape.fill"))
+                            .foregroundColor(.black.opacity(0.7))
+                    }
+                }
+//                ToolbarItem(placement: .navigationBarTrailing) {
+//                    NavigationLink(destination: FriendAddView()) {
+//                        Image(systemName: "person.crop.circle.badge.plus")
+//                    }
+//                }
             }
             .navigationTitle("スケジュール")
             .navigationBarTitleDisplayMode(.inline)

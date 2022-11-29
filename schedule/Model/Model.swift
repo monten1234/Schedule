@@ -30,13 +30,24 @@ struct UserSample: Identifiable,Codable{
     
     enum CodingKeys: String,CodingKey{
         case id
+        case name
         case mail
     }
 }
 
-struct UserData: Identifiable,Codable{
-    @DocumentID var id: String?
-    var isCheck: Bool?
+struct ReleaseBool: Identifiable,Codable{
+    var id: String
+    var isCheck: Bool
+    
+    enum CodingKeys: String,CodingKey{
+        case id
+        case isCheck
+    }
+}
+
+struct PermissionBool: Identifiable,Codable{
+    var id: String
+    var isCheck: Bool
     
     enum CodingKeys: String,CodingKey{
         case id

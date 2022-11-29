@@ -75,12 +75,20 @@ struct FriendAddView: View {
     
     func sendUserData(id: String, name: String) {
         do {
-            let data = UserSample(name: name)
-            try Firestore.firestore().collection("users").document(userID ?? "err").collection("permission").document(Auth.auth().currentUser?.uid ?? "err").setData(from: data)
+            let data = UserSample(id: id)
+            try Firestore.firestore().collection("users").document(userID ?? "err").collection("group").document(Auth.auth().currentUser?.uid ?? "err").setData(from: data)
         } catch {
             print(error)
         }
     }
+//    func releasePermission(bool: Bool) {
+//        do {
+//            let data = ReleaseBool(bool: bool)
+//            try Firestore.firestore().collection("users").document(Auth.auth().currentUser?.uid ?? "err").collection("schedule").document(Bindingでやる).collection(releaseSelection).document().setData(from: data)
+//        } catch {
+//            print(error)
+//        }
+//    }
 }
 
 

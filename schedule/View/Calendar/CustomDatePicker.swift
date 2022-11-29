@@ -11,7 +11,9 @@ struct CustomDatePicker: View {
     @StateObject var viewModel = ScheduleViewModel()
     @Binding var currentDate: Date
     @State var infos = [SInfo]()
-    @State var tasks = [SInfo]()
+//    @State var tasks = [SInfo]()
+//    @State var tasks: SInfo?
+
 
     // Month update on arrow button clicks...
     @State var currentMonth: Int = 0
@@ -98,24 +100,29 @@ struct CustomDatePicker: View {
                     .font(.title2.bold())
                     .frame(maxWidth: .infinity,alignment: .leading)
                     .padding(.vertical,20)
-                
-                
-                
-//                ForEach (tasks) { task in
-//                    VStack(alignment: .leading, spacing: 10) {
-//                        Text(task.title ?? "")
-//                            .font(.title2.bold())
-//                    }
-//                    .padding(.vertical,10)
-//                    .padding(.horizontal)
-//                    .frame(maxWidth: .infinity, alignment: .leading)
-//                    .background(
-//
-//                        Color(.red)
-//                            .opacity(0.5)
-//                            .cornerRadius(10)
-//                    )
-//                }
+
+                if let info = infos.filter({ info in
+                    return isSameDay(date1: info.date, date2: currentDate)
+                }){
+                    ForEach (info) { info in
+                        VStack(alignment: .leading, spacing: 10) {
+//                            Text(info.date.addingTimeInterval(CGFloat.random(in: 0...5000)),style: .time)
+
+                            Text(info.title ?? "err")
+                                .font(.title2.bold())
+                        }
+                        .padding(.vertical,10)
+                        .padding(.horizontal)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(
+
+                            Color(.red)
+                                .opacity(0.5)
+                                .cornerRadius(10)
+                        )
+                    }
+//                    print(task.title)
+                }
                 
                 
 //                else{
@@ -133,11 +140,14 @@ struct CustomDatePicker: View {
         .onAppear{
             Task{
                 infos = await viewModel.getInfo()
-                if let task = infos.first(where: { task in
-                    return isSameDay(date1: task.date, date2: currentDate)
-                }){
-                    tasks.append(task)
-                }
+//                if let task = infos.first(where: { task in
+//                    return isSameDay(date1: task.date, date2: currentDate)
+//                }){
+//                    tasks.append(task)
+//                }
+//                let task = infos.first(where: { task in
+//                    return isSameDay(date1: task.date, date2: currentDate)
+//                })
             }
         }
     }

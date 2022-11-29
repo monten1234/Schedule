@@ -14,10 +14,11 @@ struct LoginView: View {
     
     @State var mail:String = ""
     @State var password:String = ""
-    //@State public var errorMessage:String = ""
+//    @State public var errorMessage:String = ""
 //    @State private var shouldShowSecondView: Bool = false
     @State var isShowSinUpView: Bool = false
-    @Binding var isPresentedLoginView: Bool
+//    @Binding var isPresentedLoginView: Bool
+    @AppStorage("log_status") var log_status = false
 
     
     var body: some View {
@@ -74,8 +75,10 @@ struct LoginView: View {
 
     func login() {
         Auth.auth().signIn(withEmail: mail, password: password) { authResult, error in
-            if error == nil {
-                self.isPresentedLoginView = false
+            if authResult?.user != nil {
+                print("success")
+                log_status = true
+//                self.isPresentedLoginView = false
 //                NavigationLink(destination: HomeView(),isActive: $shouldShowSecondView) {
 //                    EmptyView()
 //                }
@@ -122,20 +125,43 @@ struct SignUpView: View {
         }
     }
     
+//    func signup() {
+//        Auth.auth().createUser(withEmail: mail, password: password) { authResult, error in
+//            if error == nil {
+//                isPresentedSignUpView = false
+//                do {
+//                    let user = UserSample(name: name, mail: mail)
+//                    try Firestore.firestore().collection("users").document(Auth.auth().currentUser?.uid ?? "err").setData(from: user)
+//                } catch {
+//                    //print(error)
+//                }
+//            } else {
+//                //失敗の処理
+//                print(error!)
+//            }
+//        }
+//    }
     func signup() {
         Auth.auth().createUser(withEmail: mail, password: password) { authResult, error in
-            if error == nil {
-                isPresentedSignUpView = false
-                do {
-                    let user = UserSample(name: name, mail: mail)
-                    try Firestore.firestore().collection("users").document(Auth.auth().currentUser?.uid ?? "err").setData(from: user)
-                } catch {
-                    //print(error)
+            //            guard let self = self else { return }
+            if let user = authResult?.user {
+                let req = user.createProfileChangeRequest()
+                req.displayName = name
+                req.commitChanges() { error in
+//                    guard let self = self else { return }
+                    if error == nil {
+                        user.sendEmailVerification() { error in
+//                            guard let self = self else { return }
+                            if error == nil {
+                                // 仮登録完了画面へ遷移する処理
+                            }
+                            //                                    self.showErrorIfNeeded(error)
+                        }
+                    }
+                    //                            self.showErrorIfNeeded(error)
                 }
-            } else {
-                //失敗の処理
-                print(error!)
             }
+            //                    self.showErrorIfNeeded(error)
         }
     }
 }

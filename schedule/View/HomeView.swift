@@ -35,9 +35,10 @@ struct HomeView: View {
                     Image(systemName: "person.2.fill")
                 }.tag(4)
         }
-        .fullScreenCover(isPresented: $isShowLoginView) {
-            LoginView(isPresentedLoginView: $isShowLoginView)
-        }
+        //　ログイン画面を出す
+//        .fullScreenCover(isPresented: $isShowLoginView) {
+//            LoginView(isPresentedLoginView: $isShowLoginView)
+//        }
 //        .onAppear(){
 //            firstVisitSetup()
 //        }

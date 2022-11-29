@@ -11,19 +11,20 @@ import FirebaseAuth
 
 struct ReleaseSelectionView: View {
     @StateObject var viewModel = ScheduleViewModel()
-    @State var sentGroupDatas: [UserSample] = []
-    @State var isReleasePasonal : Bool = true
+    @State var sentGroupDatas: [ReleaseBool] = []
+    @State var isReleaseParsonal : Bool = true
+    @State var ids:[ReleaseBool] = []
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            ForEach(sentGroupDatas) { user in
+            ForEach(0 ..< ids.count, id:\.self) { item in
                 HStack {
-                    Text("\(user.name ?? "nill")")
-                    
+                    Text("\(ids[item])")
+                        .foregroundColor(.black)
                     Button {
-                        isReleasePasonal.toggle()
+                        isReleaseParsonal.toggle()
                     } label: {
-                        if isReleasePasonal {
+                        if isReleaseParsonal {
                             Text("公開する")
                                 .foregroundColor(.white)
                                 .background(Color.red.opacity(0.7))
@@ -41,21 +42,42 @@ struct ReleaseSelectionView: View {
         }
         .onAppear{
             Task {
-                sentGroupDatas = await sentGroupData()
+                await sentGroupData()
+                print(sentGroupDatas)
+                for data in $sentGroupDatas {
+                    if data.isCheck{
+                        ids.id.append(data.id)
+                    }
+                }
+                ForEach(sentGroupDatas) { data in
+                    if data.isCheck{
+                        ids.id.append(data.id)
+                    }
+                }
+                print(ids)
             }
+
         }
     }
-    func sentGroupData() async -> [UserSample] {
+    func sentGroupData() async{
         do {
             let db = Firestore.firestore().collection("users").document(Auth.auth().currentUser?.uid ?? "err").collection("group")
-            let iron = try await db.getDocuments()
-            self.sentGroupDatas = iron.documents.compactMap({ item in
-                return try? item.data(as: UserSample.self)
+            let sentGroupDatas = try await db.getDocuments()
+            self.sentGroupDatas = sentGroupDatas.documents.compactMap({ item in
+                return try? item.data(as: ReleaseBool.self)
             })
+//            print(self.sentGroupDatas)
         } catch {
             print(error.localizedDescription)
         }
-        return sentGroupDatas
+        
+    }
+    func getFriendID () {
+//        for data in sentGroupDatas {
+//            if data.isCheck!{
+//                ids[0].append(contentsOf: data.id!)
+//            }
+//        }
     }
 }
 

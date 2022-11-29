@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("log_status") var log_status = false
 //    @StateObject var viewModel = Time()
 //    @State var timeArray = []
 //    @State var selectedTag = 1
@@ -32,7 +33,11 @@ struct ContentView: View {
 //        }
 //    }
     var body: some View {
-        HomeView()
+        if log_status {
+            HomeView()
+        } else {
+            LoginView()
+        }
     }
 }
 

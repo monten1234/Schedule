@@ -67,6 +67,9 @@ struct ShareCalendarView: View {
                     .onAppear{
                         Task {
                             infos = await getFriendInfo()
+                            infos = infos.sorted(by: {
+                                $0.date.compare($1.date) == .orderedAscending
+                            })
                         }
                     }
             }

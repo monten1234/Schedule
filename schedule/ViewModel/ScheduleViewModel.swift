@@ -13,7 +13,10 @@ import FirebaseFirestoreSwift
 class ScheduleViewModel: ObservableObject {
     var infos: [SInfo] = []
     var user: [UserSample] = []
-    var userData: [UserData] = []
+//    var userData: [UserData] = []
+    var ids: [String]? = []
+    var isCheck: Bool = true
+    var data: [ReleaseBool]?
     
     
     func save(title: String, date: Date, memo: String) {
@@ -107,7 +110,6 @@ class ScheduleViewModel: ObservableObject {
 
 //        withAnimation{infos.remove(at: index)}
     }
-    
 }
 
 class usersID : ObservableObject {
@@ -115,15 +117,15 @@ class usersID : ObservableObject {
     
 }
 
-class AppDelegate : UIResponder, UIApplicationDelegate {
-    @State var isShowLoginView: Bool = true
-    
-    func application(_application: UIApplication,
-    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
-        
-        //起動時の処理
-        LoginView(isPresentedLoginView: $isShowLoginView)
-        
-        return true
-    }
-}
+//class AppDelegate : UIResponder, UIApplicationDelegate {
+//    @State var isShowLoginView: Bool = true
+//
+//    func application(_application: UIApplication,
+//    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
+//
+//        //起動時の処理
+//        LoginView(isPresentedLoginView: $isShowLoginView)
+//
+//        return true
+//    }
+//}

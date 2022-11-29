@@ -15,7 +15,6 @@ struct FriendView: View {
     @EnvironmentObject var userID: usersID
     @State var page : Int? = 0
     
-    
     var body: some View {
         NavigationView {
             ZStack {
@@ -27,7 +26,8 @@ struct FriendView: View {
                                 userID.userID = user.id ?? "err"
                                 page = 3
                             } label: {
-                                Text("\(user.name ?? "nill")")
+                                Text("\(user.name ?? "nil")")
+                                    .foregroundColor(.black )
                             }
                             .padding()
                             NavigationLink(destination : ShareCalendarView(),
@@ -61,24 +61,25 @@ struct FriendView: View {
                 }
                 .onAppear{
                     Task {
-                        sentGroupDatas = await sentGroupData()
+                        await sentGroupData()
                     }
+                    print(sentGroupDatas)
                 }
             }
         }
     }
     
-    func sentGroupData() async -> [UserSample] {
+    func sentGroupData() async  {
         do {
             let db = Firestore.firestore().collection("users").document(Auth.auth().currentUser?.uid ?? "err").collection("group")
-            let iron = try await db.getDocuments()
-            self.sentGroupDatas = iron.documents.compactMap({ item in
+            let sentGroupDatas = try await db.getDocuments()
+            self.sentGroupDatas = sentGroupDatas.documents.compactMap({ item in
                 return try? item.data(as: UserSample.self)
             })
+            print(self.sentGroupDatas)
         } catch {
             print(error.localizedDescription)
         }
-        return sentGroupDatas
     }
 }
 
