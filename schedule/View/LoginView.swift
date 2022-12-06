@@ -125,45 +125,45 @@ struct SignUpView: View {
         }
     }
     
-//    func signup() {
-//        Auth.auth().createUser(withEmail: mail, password: password) { authResult, error in
-//            if error == nil {
-//                isPresentedSignUpView = false
-//                do {
-//                    let user = UserSample(name: name, mail: mail)
-//                    try Firestore.firestore().collection("users").document(Auth.auth().currentUser?.uid ?? "err").setData(from: user)
-//                } catch {
-//                    //print(error)
-//                }
-//            } else {
-//                //失敗の処理
-//                print(error!)
-//            }
-//        }
-//    }
     func signup() {
         Auth.auth().createUser(withEmail: mail, password: password) { authResult, error in
-            //            guard let self = self else { return }
-            if let user = authResult?.user {
-                let req = user.createProfileChangeRequest()
-                req.displayName = name
-                req.commitChanges() { error in
-//                    guard let self = self else { return }
-                    if error == nil {
-                        user.sendEmailVerification() { error in
-//                            guard let self = self else { return }
-                            if error == nil {
-                                // 仮登録完了画面へ遷移する処理
-                            }
-                            //                                    self.showErrorIfNeeded(error)
-                        }
-                    }
-                    //                            self.showErrorIfNeeded(error)
+            if error == nil {
+                isPresentedSignUpView = false
+                do {
+                    let user = UserSample(name: name, mail: mail)
+                    try Firestore.firestore().collection("users").document(Auth.auth().currentUser?.uid ?? "err").setData(from: user)
+                } catch {
+                    //print(error)
                 }
+            } else {
+                //失敗の処理
+                print(error!)
             }
-            //                    self.showErrorIfNeeded(error)
         }
     }
+//    func signup() {
+//        Auth.auth().createUser(withEmail: mail, password: password) { authResult, error in
+//            //            guard let self = self else { return }
+//            if let user = authResult?.user {
+//                let req = user.createProfileChangeRequest()
+//                req.displayName = name
+//                req.commitChanges() { error in
+////                    guard let self = self else { return }
+//                    if error == nil {
+//                        user.sendEmailVerification() { error in
+////                            guard let self = self else { return }
+//                            if error == nil {
+//                                // 仮登録完了画面へ遷移する処理
+//                            }
+//                            //                                    self.showErrorIfNeeded(error)
+//                        }
+//                    }
+//                    //                            self.showErrorIfNeeded(error)
+//                }
+//            }
+//            //                    self.showErrorIfNeeded(error)
+//        }
+//    }
 }
 
 

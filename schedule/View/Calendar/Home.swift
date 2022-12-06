@@ -13,14 +13,18 @@ struct Home: View {
     
     var body: some View {
         NavigationView{
-            ScrollView(.vertical, showsIndicators: false) {
-                
-                VStack(spacing: 20){
+            ZStack {
+                Color.green.opacity(0.06)
+                    .ignoresSafeArea()
+                ScrollView(.vertical, showsIndicators: false) {
                     
-                    // Custom Date Picker....
-                    CustomDatePicker(currentDate: $currentDate)
+                    VStack(spacing: 20){
+                        
+                        // Custom Date Picker....
+                        CustomDatePicker(currentDate: $currentDate)
+                    }
+                    .padding(.vertical)
                 }
-                .padding(.vertical)
             }
             // Safe Area View...
 //            .safeAreaInset(edge: .bottom) {

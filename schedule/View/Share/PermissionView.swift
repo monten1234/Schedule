@@ -31,7 +31,7 @@ struct PermissionView: View {
                                     isShowingDialog = true
                                     userID = user.id
                                 } label: {
-                                    Text("\(user.id)")
+                                    Text("\(user.id ?? "zz")")
                                     //                                .foregroundColor(.black)
                                 }
                                 .buttonStyle(PlainButtonStyle())

@@ -75,7 +75,7 @@ struct AdditionView: View {
                         }
                     }
                     .padding()
-                    NavigationLink(destination: ReleaseSelectionView(), tag: 1, selection: $page) {
+                    NavigationLink(destination: ReleaseSelectionView(title: title, date: date, memo: memo), tag: 1, selection: $page) {
                         EmptyView()
                     }
                 }

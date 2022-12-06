@@ -14,12 +14,14 @@ struct SInfo: Identifiable,Codable{
     var date: Date
     var title: String?
     var memo: String?
+    var members: [String]?
     
     enum CodingKeys: String,CodingKey{
         case id
         case date
         case title
         case memo
+        case members
     }
 }
 
@@ -36,7 +38,7 @@ struct UserSample: Identifiable,Codable{
 }
 
 struct ReleaseBool: Identifiable,Codable{
-    var id: String
+    @DocumentID var id: String?
     var isCheck: Bool
     
     enum CodingKeys: String,CodingKey{
@@ -46,7 +48,7 @@ struct ReleaseBool: Identifiable,Codable{
 }
 
 struct PermissionBool: Identifiable,Codable{
-    var id: String
+    @DocumentID var id: String?
     var isCheck: Bool
     
     enum CodingKeys: String,CodingKey{
